@@ -55,6 +55,12 @@ export const PopperIcon = (p) => (
     <path d="M19.5 3.5v.01M20.5 13.5v.01M10.5 3.5v.01" strokeWidth="2.4" />
   </svg>
 )
+export const SparkleIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M10 3.5l1.8 5.2L17 10.5l-5.2 1.8L10 17.5l-1.8-5.2L3 10.5l5.2-1.8L10 3.5z" />
+    <path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z" />
+  </svg>
+)
 export const ChevronIcon = (p) => (
   <svg {...base} {...p}>
     <path d="M6 14.5l6-6 6 6" />

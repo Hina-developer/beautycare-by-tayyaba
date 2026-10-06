@@ -1,5 +1,5 @@
 // Loads every image up front, so nothing pops in late while the visitor scrolls.
-// The opening screen stays up until this finishes.
+// The welcome screen stays up until this finishes.
 
 const kept = [] // keep references so the browser holds the decoded images in memory
 

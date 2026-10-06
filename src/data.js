@@ -44,25 +44,25 @@ export const CATEGORIES = [
   { id: 'more', label: 'Price list & Training' },
 ]
 
-// The three grand-opening offers shown at the top of the page.
-export const OPENING_DEALS = [
+// The three special deals shown at the top of the page.
+export const FEATURED_DEALS = [
   {
     id: 'deal-1',
-    title: 'Opening Deal #1: Eyebrows',
+    title: 'Deal #1: Eyebrows',
     was: 'Rs 200',
     now: 'Rs 150',
     note: 'Forehead and upper lip are free with it.',
   },
   {
     id: 'deal-2',
-    title: 'Opening Deal #2: Gold Polisher',
+    title: 'Deal #2: Gold Polisher',
     was: 'Rs 400',
     now: 'Rs 300',
     note: 'Free hand and foot massage, plus a face massage.',
   },
   {
     id: 'deal-3',
-    title: 'Opening Deal #3: Gold Glow',
+    title: 'Deal #3: Gold Glow',
     was: 'Rs 700',
     now: 'Rs 650',
     note: 'Gold skin polisher with free hand, foot and face massage.',
@@ -94,10 +94,5 @@ export const DEALS = [
   { id: 'training', cat: 'more', title: 'Beauty Salon Training Program', price: '6 months at Rs 5,000 a month' },
 ].map((d) => ({ ...d, ...img(d.id) }))
 
-export const INVITES = [
-  { id: 'ceremony', title: 'Ribbon Cutting Ceremony' },
-  { id: 'invitation', title: 'Grand Opening Invitation' },
-].map((d) => ({ ...d, ...img(d.id) }))
-
 /** Every image on the site. All of them are loaded before the page opens. */
-export const ALL_IMAGES = [LOGO, ...OPENING_DEALS, ...DEALS, ...INVITES].map((i) => i.src)
+export const ALL_IMAGES = [LOGO, ...FEATURED_DEALS, ...DEALS].map((i) => i.src)

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ALL_IMAGES, CATEGORIES, DEALS, INVITES, LOGO, OPENING_DEALS, SALON, bookingLink } from './data'
+import { ALL_IMAGES, CATEGORIES, DEALS, FEATURED_DEALS, LOGO, SALON, bookingLink } from './data'
 import { preloadImages } from './preload'
 import { attachConfetti, firePoppers } from './confetti'
 import { MUSIC_CREDIT, createMusicPlayer, todayKey } from './music'
 import OpeningGate from './components/OpeningGate'
-import Balloons from './components/Balloons'
+import FloatingItems from './components/FloatingItems'
 import PosterCard from './components/PosterCard'
 import Lightbox from './components/Lightbox'
 import Dock from './components/Dock'
@@ -17,7 +17,7 @@ export default function App() {
     preloadImages(ALL_IMAGES, (done) => setLoaded(done))
   }, [])
 
-  // ---- opening gate ----
+  // ---- welcome screen ----
   const [gate, setGate] = useState('closed') // closed -> opening -> gone
   const opened = gate !== 'closed'
 
@@ -81,16 +81,16 @@ export default function App() {
   return (
     <>
       {gate !== 'gone' && <OpeningGate loaded={loaded} total={ALL_IMAGES.length} onOpen={openGate} />}
-      {opened && <Balloons />}
+      {opened && <FloatingItems />}
       <canvas ref={canvasRef} className="confetti" aria-hidden="true" />
 
       <div className="page">
         <header className="hero">
           <img className="hero-logo" src={LOGO.src} width={LOGO.width} height={LOGO.height} alt="Beauty Care by Tayyaba, Professional Salon and Spa Services" />
-          <p className="script hero-script">Grand Opening</p>
-          <h1 className="gold-text">Opening Dhamaka Deals</h1>
+          <p className="script hero-script">Because you deserve the best</p>
+          <h1 className="gold-text">Your Beauty, Our Passion</h1>
           <p className="hero-lead">
-            Three opening offers, bridal packages and deals on skin, hair and nails. Book on WhatsApp or call{' '}
+            Bridal packages, party makeup, skin care, hair and nails, all in one place in Lahore. Book on WhatsApp or call{' '}
             <span className="nowrap">{SALON.phoneDisplay}</span>.
           </p>
           <div className="actions">
@@ -106,9 +106,9 @@ export default function App() {
           </a>
         </header>
 
-        <section className="featured" aria-label="Opening deals">
-          {OPENING_DEALS.map((deal, i) => (
-            <PosterCard key={deal.id} deal={deal} featured onView={() => setViewer({ items: OPENING_DEALS, index: i })} />
+        <section className="featured" aria-label="Special deals">
+          {FEATURED_DEALS.map((deal, i) => (
+            <PosterCard key={deal.id} deal={deal} featured onView={() => setViewer({ items: FEATURED_DEALS, index: i })} />
           ))}
         </section>
 
@@ -129,25 +129,6 @@ export default function App() {
               <PosterCard key={deal.id} deal={deal} onView={() => setViewer({ items: visibleDeals, index: i })} />
             ))}
           </div>
-        </section>
-
-        <section id="invitation" className="invite">
-          <div className="invite-text">
-            <p className="script">With love</p>
-            <h2 className="gold-text">You Are Invited</h2>
-            <p>
-              Come and celebrate the opening of our salon with us. Family, friends and every new client are welcome. Your
-              presence means a lot.
-            </p>
-            <a className="btn" href={SALON.maps} target="_blank" rel="noopener noreferrer">
-              <PinIcon /> Get directions
-            </a>
-          </div>
-          {INVITES.map((inv, i) => (
-            <button key={inv.id} className="card-poster invite-poster" onClick={() => setViewer({ items: INVITES, index: i })} aria-label={`View poster: ${inv.title}`}>
-              <img src={inv.src} width={inv.width} height={inv.height} alt={inv.title} loading="eager" decoding="sync" />
-            </button>
-          ))}
         </section>
 
         <section id="results">
@@ -217,7 +198,7 @@ export default function App() {
         </section>
 
         <footer className="footer">
-          <p className="script">Your beauty, our passion</p>
+          <p className="script">See you at the salon</p>
           <p>
             {SALON.name} · {SALON.tagline}
           </p>

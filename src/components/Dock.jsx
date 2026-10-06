@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { SALON, bookingLink } from '../data'
 import { DAY_KEYS, DAY_LABELS, SONGS, todayKey } from '../music'
 import { firePoppers } from '../confetti'
-import { ChevronIcon, Equalizer, PhoneIcon, PopperIcon, WhatsAppIcon } from './Icons'
+import { ChevronIcon, Equalizer, PhoneIcon, SparkleIcon, WhatsAppIcon } from './Icons'
 
-/** The bar fixed to the bottom: music, WhatsApp, call and a party popper. */
+/** The bar fixed to the bottom: music, sparkle, call and WhatsApp. */
 export default function Dock({ music, dayKey, onToggle, onPickDay }) {
   const playing = music === 'playing'
   const status = { playing: 'Now playing', off: 'Music is off. Tap to play', missing: 'No song added yet' }[music]
@@ -57,8 +57,8 @@ export default function Dock({ music, dayKey, onToggle, onPickDay }) {
           <ChevronIcon style={{ transform: open ? 'rotate(180deg)' : 'none' }} />
         </button>
         <span className="dock-divider" />
-        <button className="icon-btn" onClick={firePoppers} aria-label="Fire the party poppers">
-          <PopperIcon />
+        <button className="icon-btn" onClick={firePoppers} aria-label="Throw some sparkle">
+          <SparkleIcon />
         </button>
         <a className="icon-btn" href={SALON.tel} aria-label={'Call ' + SALON.phoneDisplay}>
           <PhoneIcon />

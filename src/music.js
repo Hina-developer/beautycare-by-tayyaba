@@ -8,7 +8,7 @@
 //
 // The site plays only your files. A day with no file stays silent.
 // Browsers do not allow sound before the visitor taps something, so the song
-// starts when the visitor cuts the ribbon on the opening screen.
+// starts when the visitor taps Enter on the welcome screen.
 
 export const SONGS = {
   monday:    { file: 'songs/monday.mp3',    title: 'Daybreak' },

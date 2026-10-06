@@ -1,6 +1,6 @@
-# Beauty Care by Tayyaba — Grand Opening Website
+# Beauty Care by Tayyaba — Salon Website
 
-React.js (Vite) website. Black and gold, with balloons, party poppers, all the deal posters, WhatsApp and call buttons, TikTok and Instagram links, and your own song for each day of the week.
+React.js (Vite) website. Black and gold, with floating makeup brushes, lipsticks and other salon items, glitter, all the deal posters, WhatsApp and call buttons, TikTok and Instagram links, and your own song for each day of the week.
 
 ## Chalane ka tareeqa (how to run)
 
@@ -75,7 +75,8 @@ Kisi aur hosting (Netlify, Vercel) ke liye: `npm run build` chalayein aur `dist`
 | Kya badalna hai | File |
 | --- | --- |
 | Phone number, WhatsApp, TikTok, Instagram, address | `src/data.js` (sab se upar `SALON`) |
-| Deals ke naam aur prices | `src/data.js` (`OPENING_DEALS` aur `DEALS`) |
+| Deals ke naam aur prices | `src/data.js` (`FEATURED_DEALS` aur `DEALS`) |
+| Upar ki heading aur likhai | `src/App.jsx` (hero) aur `src/components/OpeningGate.jsx` (pehli screen) |
 | Posters ki images | `public/images/` |
 | Har din ka song | `public/songs/` |
 | Colours aur fonts | `src/styles.css` (sab se upar `:root`) |
@@ -100,7 +101,7 @@ Yeh songs Tanner Helland ke hain, [CC BY 4.0 licence](https://github.com/tannerh
 - Saaton songs apne laga lein to `src/music.js` mein `MUSIC_CREDIT = null` kar dein.
 - Jis din ki file nahi hogi, us din koi music nahi chalega.
 - Awaaz kam ya zyada karni ho to `src/music.js` mein `VOLUME` badlein (0 se 1).
-- Browser bina tap ke awaaz nahi chalne deta. Is liye song tab shuru hota hai jab visitor pehli screen par ribbon kaat-ta hai.
+- Browser bina tap ke awaaz nahi chalne deta. Is liye song tab shuru hota hai jab visitor pehli screen par Enter dabata hai.
 - Neeche wali gold bar se song band/chalu hota hai aur doosre din ka song bhi sun sakte hain.
 
 ## Images: sab ek saath load hoti hain
@@ -127,11 +128,11 @@ src/
   data.js             salon ki details aur deals
   music.js            har din ka song (songs ki list yahan hai)
   preload.js          saari images pehle load karna
-  confetti.js         party poppers
+  confetti.js         glitter (sparkles)
   styles.css          design
   components/
-    OpeningGate.jsx   pehli screen (ribbon cutting)
-    Balloons.jsx      balloons (tap karne par phat-te hain)
+    OpeningGate.jsx   pehli screen (Welcome, Enter button)
+    FloatingItems.jsx urti hui salon ki cheezein (brush, lipstick...)
     PosterCard.jsx    ek deal ka card
     Lightbox.jsx      poster bada kar ke dekhna
     Dock.jsx          neeche wali bar: music, call, WhatsApp
