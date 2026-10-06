@@ -1,13 +1,18 @@
 import { bookingLink } from '../data'
 import { WhatsAppIcon } from './Icons'
 
-/** One deal: the poster (tap to see it large), its price and a booking button. */
+/**
+ * One deal: the poster (tap to see it large), its price and a booking button.
+ * Every card is the same size. The poster sits whole inside a fixed frame, and
+ * a blurred copy of it fills any space left over, so nothing is cut off.
+ */
 export default function PosterCard({ deal, onView, featured = false }) {
   return (
     <article className={'card' + (featured ? ' card-featured' : '')}>
-      <button className="card-poster" onClick={onView} aria-label={`View poster: ${deal.title}`}>
+      <button className="card-poster card-frame" onClick={onView} aria-label={`View poster: ${deal.title}`}>
+        <img className="card-blur" src={deal.src} alt="" aria-hidden="true" loading="eager" />
         {/* loading="eager": every poster is fetched at once, none wait for scrolling */}
-        <img src={deal.src} width={deal.width} height={deal.height} alt={deal.title + ' poster'} loading="eager" decoding="sync" />
+        <img className="card-art" src={deal.src} width={deal.width} height={deal.height} alt={deal.title + ' poster'} loading="eager" decoding="sync" />
       </button>
       <div className="card-body">
         <h3>{deal.title}</h3>

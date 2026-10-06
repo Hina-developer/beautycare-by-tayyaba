@@ -1,5 +1,5 @@
 /* Layout: an invitation you open. A framed opening screen with a ribbon to cut,
-   then posters hung in columns like a gallery wall, and one gold bar docked at
+   then posters in even rows of same-size cards, and one gold bar docked at
    the bottom for music, WhatsApp and calls. The look is the salon's own: black
    and gold foil, with the rose of its "Weekend Deal" ribbons as the one accent. */
 :root {
@@ -241,11 +241,13 @@ h3 {
 .featured {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  grid-auto-rows: 1fr;
   gap: 22px;
   margin-top: calc(clamp(56px, 9vw, 100px) * -0.5);
 }
 .card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   background: var(--ink-raised);
   border: 1px solid var(--line);
 }
@@ -264,9 +266,33 @@ h3 {
 .card-poster img {
   width: 100%;
 }
+/* Same-size frame for every deal card. The whole poster shows inside it. */
+.card-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+.card-featured .card-frame {
+  aspect-ratio: 4 / 5;
+}
+.card-frame .card-blur {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.5);
+  transform: scale(1.2);
+}
+.card-frame .card-art {
+  position: relative;
+  height: 100%;
+  object-fit: contain;
+}
 .card-body {
-  display: grid;
-  justify-items: start;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 6px;
   padding: 14px 16px 18px;
   min-width: 0;
@@ -296,8 +322,12 @@ h3 {
   color: var(--muted);
   font-size: 0.95rem;
 }
+/* the button always sits at the bottom, so buttons line up across a row */
 .card .btn {
-  margin-top: 6px;
+  margin-top: auto;
+}
+.card-body > :nth-last-child(2) {
+  margin-bottom: 8px;
 }
 
 .chips {
@@ -325,14 +355,12 @@ h3 {
   font-weight: 600;
 }
 
-/* posters hang in columns, each at its own height */
+/* deals sit in even rows: every card is the same height */
 .wall {
-  columns: 3 290px;
-  column-gap: 22px;
-}
-.wall .card {
-  break-inside: avoid;
-  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  grid-auto-rows: 1fr;
+  gap: 22px;
 }
 
 /* ---------- invitation ---------- */
