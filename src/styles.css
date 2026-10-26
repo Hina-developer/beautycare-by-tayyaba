@@ -2164,3 +2164,8 @@ button.product:hover {
 .svc-photo {
   margin-bottom: 6px;
 }
+
+/* tall (phone-story) weekend posters */
+.card-tall .card-frame {
+  aspect-ratio: 9 / 16;
+}

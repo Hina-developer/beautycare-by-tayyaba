@@ -49,7 +49,7 @@ export const SERVICES = [
   { group: 'skin', art: 'facial', title: 'Facials & Skincare', poster: 'korean-glass-facial', text: 'Whitening, glow, 24k gold and Korean facials, cleansing and masks.', price: null, duration: null },
   { group: 'skin', art: 'glow', title: 'Polishers', poster: 'deal-2', text: 'Whitening, gold and pink glow polishers for face, hands and feet.', price: null, duration: null },
   { group: 'skin', art: 'stones', title: 'Spa Services', poster: 'spa-massage-deals', text: 'Face, head, back, neck and shoulder massages.', price: null, duration: null },
-  { group: 'skin', art: 'stones', title: 'Full-Body Massage', poster: 'massage-wax', text: 'A relaxing full-body massage.', price: null, duration: '60 min' },
+  { group: 'skin', art: 'stones', title: 'Full-Body Massage', poster: 'full-body-massage', text: 'A relaxing full-body massage.', price: null, duration: '60 min' },
   { group: 'skin', art: 'wax', title: 'Full-Body Waxing', poster: 'body-waxing-spa', text: 'Sugar or fruit wax for arms, legs, underarms and full body.', price: null, duration: null },
   { group: 'skin', art: 'brow', title: 'Threading & Facial Waxing', poster: 'deal-1', text: 'Eyebrows, forehead and upper lip.', price: null, duration: null },
 ]

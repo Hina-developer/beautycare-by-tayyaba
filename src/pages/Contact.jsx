@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
 import { SALON, bookingLink, whatsappLink } from '../data'
 import { SERVICES } from '../services'
-import { DEAL_POSTS } from '../designedDeals'
+import { ALL_POSTERS } from '../data'
 import PageHead from '../components/PageHead'
 import CopyButton from '../components/CopyButton'
 import { PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons'
 
-const CHOICES = [...SERVICES.map((s) => s.title), ...DEAL_POSTS.map((d) => d.title + ' (deal)'), 'Something else']
+const CHOICES = [...SERVICES.map((s) => s.title), ...ALL_POSTERS.map((d) => d.title + ' (deal)'), 'Something else']
 const TIMES = ['Any time', 'Morning', 'Afternoon', 'Evening']
 const phoneOk = (p) => /^[0-9+\-\s]{10,15}$/.test(p.trim())
 

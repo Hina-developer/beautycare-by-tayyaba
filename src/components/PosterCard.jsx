@@ -7,9 +7,9 @@ import LikeButton from './LikeButton'
  * Every card is the same size. The poster sits whole inside a fixed frame, and
  * a blurred copy of it fills any space left over, so nothing is cut off.
  */
-export default function PosterCard({ deal, onView, featured = false }) {
+export default function PosterCard({ deal, onView, featured = false, tall = false }) {
   return (
-    <article className={'card' + (featured ? ' card-featured' : '')}>
+    <article className={'card' + (featured ? ' card-featured' : '') + (tall ? ' card-tall' : '')}>
       <button className="card-poster card-frame" onClick={onView} aria-label={`View poster: ${deal.title}`}>
         <img className="card-blur" src={deal.src} alt="" aria-hidden="true" loading="eager" />
         {/* loading="eager": every poster is fetched at once, none wait for scrolling */}

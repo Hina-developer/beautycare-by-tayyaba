@@ -122,15 +122,16 @@ export const DEALS = [
 
   { id: 'skin-care', cat: 'skin', title: 'Skin Care Deals', price: 'Rs 3,500 to 6,000' },
   { id: 'five-beauty-deals', cat: 'skin', title: '5 Beauty Deals', price: 'From Rs 2,000' },
-  { id: 'massage-wax', cat: 'skin', title: 'Full Body Massage & Wax', price: 'Massage Rs 3,800 · Wax Rs 4,500' },
+  { id: 'full-body-massage', cat: 'skin', title: 'Full Body Massage', was: 'Rs 4,500', now: 'Rs 3,800' },
+  { id: 'full-body-wax', cat: 'skin', title: 'Full Body Wax', was: 'Rs 5,500', now: 'Rs 4,500' },
 
   { id: 'hair-deals', cat: 'hair', title: 'Hair Deals', price: 'Rs 3,000 to 15,000' },
   { id: 'premium-hair', cat: 'hair', title: 'Premium Hair Services', price: 'Four services for Rs 5,000' },
   { id: 'student-deals', cat: 'hair', title: 'Student Deals', price: 'Rs 1,500 to 2,500' },
   { id: 'two-person', cat: 'hair', title: 'Two Person Deals', price: 'Rs 5,500 to 6,000 for two' },
 
-  { id: 'mani', cat: 'nails', title: 'Mani Packages', price: '6-step Rs 2,500 · 3-step Rs 1,200' },
-  { id: 'pedi', cat: 'nails', title: 'Pedi Packages', price: '6-step Rs 2,500 · 3-step Rs 1,200' },
+  { id: 'mani', cat: 'nails', title: 'Manicure Packages', price: '6-step Rs 2,500 · 3-step Rs 1,200' },
+  { id: 'pedi', cat: 'nails', title: 'Pedicure Packages', price: '6-step Rs 2,500 · 3-step Rs 1,200' },
   { id: 'nail-shapes', cat: 'nails', title: 'Nail Shapes Guide', price: 'Seven classic shapes' },
 
   { id: 'price-list', cat: 'more', title: '30% Off All Services', price: 'Full price list' },
