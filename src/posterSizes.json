@@ -108,8 +108,8 @@
   1350
  ],
  "party-makeup-deals": [
-  1080,
-  1347
+  530,
+  907
  ],
  "hydrafacial-7499": [
   1080,
@@ -186,5 +186,49 @@
  "full-body-wax": [
   533,
   948
+ ],
+ "nikkah-package": [
+  900,
+  1350
+ ],
+ "ring-ceremony-package": [
+  900,
+  1350
+ ],
+ "mehndi-package": [
+  843,
+  1264
+ ],
+ "walima-package": [
+  843,
+  1264
+ ],
+ "party-makeup-package": [
+  900,
+  1350
+ ],
+ "mani-exclusive": [
+  900,
+  900
+ ],
+ "pedi-exclusive": [
+  900,
+  900
+ ],
+ "massage-wax": [
+  900,
+  900
+ ],
+ "opening-deal-1": [
+  1080,
+  1350
+ ],
+ "opening-deal-2": [
+  1080,
+  1350
+ ],
+ "opening-deal-3": [
+  820,
+  1025
  ]
 }

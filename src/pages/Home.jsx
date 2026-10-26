@@ -1,4 +1,6 @@
-import { LOGO, SALON, bookingLink, whatsappLink } from '../data'
+import { LOGO, OPENING_DEALS, SALON, bookingLink, whatsappLink } from '../data'
+import PosterCard from '../components/PosterCard'
+import usePosterViewer from '../components/usePosterViewer'
 import { REVIEWS } from '../reviews'
 import ServiceArt from '../components/ServiceArt'
 import { PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons'
@@ -13,6 +15,7 @@ const EXPLORE = [
 const reviewLink = whatsappLink('Assalam o Alaikum! Here is my review of Beauty Care by Tayyaba:\n')
 
 export default function Home() {
+  const [view, viewer] = usePosterViewer()
   return (
     <>
       <header className="hero">
@@ -38,6 +41,19 @@ export default function Home() {
           <PinIcon width={16} height={16} /> {SALON.address} · {SALON.hours}
         </a>
       </header>
+
+      <section className="block">
+        <div className="section-head">
+          <p className="script">Grand opening</p>
+          <h2 className="gold-text">Opening Deals</h2>
+          <p>Tap a poster to see it full size.</p>
+        </div>
+        <div className="wall">
+          {OPENING_DEALS.map((deal, i) => (
+            <PosterCard key={deal.id} deal={deal} onView={() => view(OPENING_DEALS, i)} />
+          ))}
+        </div>
+      </section>
 
       <section className="block">
         <div className="section-head">
@@ -87,6 +103,7 @@ export default function Home() {
           </div>
         )}
       </section>
+      {viewer}
     </>
   )
 }

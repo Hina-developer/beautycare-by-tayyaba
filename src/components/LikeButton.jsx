@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { SHARED, like, unlike, saveName, savedName, useLikes } from '../likes'
+import { SHARED, cleanPhone, like, maskPhone, unlike, saveName, savedName, useLikes } from '../likes'
 import Modal from './Modal'
 import { HeartIcon } from './Icons'
 
 /**
  * Heart button + "N likes". Tap the heart to like (or tap again to remove your like).
- * Tap "N likes" to see the names of everyone who liked it.
+ * Tap "N likes" to see who liked it (contact numbers, partly hidden).
  */
 export default function LikeButton({ post, title }) {
   const { list, mine, status } = useLikes(post)
-  const [asking, setAsking] = useState(false) // pop-up asking for a name
-  const [showing, setShowing] = useState(false) // pop-up with the list of names
+  const [asking, setAsking] = useState(false) // pop-up asking for a contact number
+  const [showing, setShowing] = useState(false) // pop-up with the list of who liked
   const [busy, setBusy] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -23,8 +23,8 @@ export default function LikeButton({ post, title }) {
   }
   function tapHeart() {
     if (mine) return run(() => unlike(post))
-    const name = savedName()
-    if (name) run(() => like(post, name))
+    const phone = savedName()
+    if (phone) run(() => like(post, maskPhone(phone)))
     else setAsking(true)
   }
 
@@ -53,10 +53,10 @@ export default function LikeButton({ post, title }) {
         <NamePrompt
           title={title}
           onClose={() => setAsking(false)}
-          onSave={(name) => {
-            saveName(name)
+          onSave={(phone) => {
+            saveName(phone)
             setAsking(false)
-            run(() => like(post, name))
+            run(() => like(post, maskPhone(phone)))
           }}
         />
       )}
@@ -66,27 +66,22 @@ export default function LikeButton({ post, title }) {
 }
 
 function NamePrompt({ title, onClose, onSave }) {
-  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
   const [error, setError] = useState('')
   function submit(e) {
     e.preventDefault()
-    const clean = name.trim().replace(/\s+/g, ' ')
-    if (!clean) return setError('Please write your name.')
-    if (clean.length > 40) return setError('Please keep it under 40 letters.')
+    const clean = cleanPhone(phone)
+    if (!clean) return setError('Please write your mobile number, e.g. 0300 1234567.')
     onSave(clean)
   }
   return (
-    <Modal label="Your name" onClose={onClose} className="like-modal">
+    <Modal label="Your contact number" onClose={onClose} className="like-modal">
       <h2 className="cart-title gold-text">Like {title}</h2>
-      <p className="like-note">
-        {SHARED
-          ? 'Your name will show in the list of people who liked this. We only ask once.'
-          : 'We only ask once.'}
-      </p>
+      <p className="like-note">We only ask once. Others see only part of your number, like 0300 ****567.</p>
       <form className="booking like-form" onSubmit={submit} noValidate>
-        <label htmlFor="like-name">
-          Your name *
-          <input id="like-name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="given-name" maxLength={40} autoFocus aria-invalid={!!error} />
+        <label htmlFor="like-phone">
+          Your contact number *
+          <input id="like-phone" type="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="03xx xxxxxxx" maxLength={16} autoFocus aria-invalid={!!error} />
           {error && <span className="field-error">{error}</span>}
         </label>
         <button className="btn btn-primary" type="submit">
@@ -111,7 +106,7 @@ function LikeList({ title, list, status, onClose }) {
           {list.map((l, i) => (
             <li key={(l.uid || '') + i}>
               <span className="like-avatar" aria-hidden="true">
-                {l.name.charAt(0).toUpperCase()}
+                <HeartIcon filled width={15} height={15} />
               </span>
               {l.name}
             </li>

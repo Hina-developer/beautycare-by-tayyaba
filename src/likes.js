@@ -12,7 +12,7 @@ import { FIREBASE } from './likesConfig'
 
 export const SHARED = Boolean(FIREBASE.apiKey && FIREBASE.projectId)
 
-const NAME_KEY = 'bct-like-name'
+const NAME_KEY = 'bct-like-phone'
 const LOCAL_KEY = 'bct-likes'
 const AUTH_KEY = 'bct-like-auth'
 
@@ -32,9 +32,24 @@ const write = (k, v) => {
   }
 }
 
-/** The name this visitor gave the first time they liked something. */
+/**
+ * The phone number this visitor gave the first time they liked something.
+ * Only a masked copy (e.g. "0327 ****309") is saved with the like, so the full
+ * number is never shown to other visitors.
+ */
 export const savedName = () => read(NAME_KEY, '')
 export const saveName = (n) => write(NAME_KEY, n)
+
+/** "03001234567" or "+923001234567" -> "03001234567", or '' if it is not a Pakistani mobile number. */
+export function cleanPhone(raw) {
+  let d = raw.replace(/[\s-]/g, '')
+  if (d.startsWith('+92')) d = '0' + d.slice(3)
+  else if (d.startsWith('92') && d.length === 12) d = '0' + d.slice(2)
+  return /^03\d{9}$/.test(d) ? d : ''
+}
+
+/** "03001234567" -> "0300 ****567" */
+export const maskPhone = (p) => p.slice(0, 4) + ' ****' + p.slice(-3)
 
 /** A short id for a post, e.g. "Bridal Makeup" -> "svc-bridal-makeup". */
 export const postId = (prefix, title) =>
