@@ -1,17 +1,51 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ALL_IMAGES, CATEGORIES, DEALS, FEATURED_DEALS, LOGO, SALON, bookingLink } from './data'
+import { useEffect, useRef, useState } from 'react'
+import { ALL_IMAGES } from './data'
 import { preloadImages } from './preload'
 import { attachConfetti, firePoppers } from './confetti'
-import { MUSIC_CREDIT, createMusicPlayer, todayKey } from './music'
+import { createMusicPlayer, todayKey } from './music'
+import { useRoute } from './router'
+import { CartProvider, useCartState } from './cart'
 import OpeningGate from './components/OpeningGate'
 import FloatingItems from './components/FloatingItems'
-import PosterCard from './components/PosterCard'
-import Lightbox from './components/Lightbox'
+import Header from './components/Header'
+import Footer from './components/Footer'
 import Dock from './components/Dock'
-import { InstagramIcon, PhoneIcon, PinIcon, TikTokIcon, WhatsAppIcon } from './components/Icons'
+import CartDrawer from './components/CartDrawer'
+import Home from './pages/Home'
+import ServicesPage from './pages/ServicesPage'
+import Training from './pages/Training'
+import Boutique from './pages/Boutique'
+import Rent from './pages/Rent'
+import Jewellery from './pages/Jewellery'
+import Products from './pages/Products'
+import Deals from './pages/Deals'
+import Gallery from './pages/Gallery'
+import About from './pages/About'
+import Follow from './pages/Follow'
+import Contact from './pages/Contact'
+
+// Which component draws each page. The page names and menu are in src/router.js.
+const PAGE_VIEWS = {
+  home: Home,
+  services: () => <ServicesPage group="all" />,
+  makeup: () => <ServicesPage group="makeup" />,
+  hair: () => <ServicesPage group="hair" />,
+  nails: () => <ServicesPage group="nails" />,
+  skin: () => <ServicesPage group="skin" />,
+  training: Training,
+  boutique: Boutique,
+  rent: Rent,
+  jewellery: Jewellery,
+  products: Products,
+  deals: Deals,
+  gallery: Gallery,
+  about: About,
+  follow: Follow,
+  contact: Contact,
+}
 
 export default function App() {
-  // ---- image preloading: the gate stays up until every image is ready ----
+  // ---- image preloading: the welcome screen stays up until every image is ready ----
   const [loaded, setLoaded] = useState(0)
   useEffect(() => {
     preloadImages(ALL_IMAGES, (done) => setLoaded(done))
@@ -49,179 +83,29 @@ export default function App() {
   }
   useEffect(() => () => player.current.stop(), [])
 
-  // ---- confetti canvas ----
+  // ---- glitter canvas ----
   const canvasRef = useRef(null)
   useEffect(() => attachConfetti(canvasRef.current), [])
 
-  // ---- deals filter and poster viewer ----
-  const [cat, setCat] = useState('all')
-  const visibleDeals = useMemo(() => (cat === 'all' ? DEALS : DEALS.filter((d) => d.cat === cat)), [cat])
-  const [viewer, setViewer] = useState(null) // { items, index }
-
-  // ---- copy the phone number ----
-  const [copied, setCopied] = useState(false)
-  const numberRef = useRef(null)
-  function copyNumber() {
-    const done = () => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
-    const selectIt = () => {
-      // if the browser refuses to copy, select the number so it can be copied by hand
-      const range = document.createRange()
-      range.selectNodeContents(numberRef.current)
-      const sel = window.getSelection()
-      sel.removeAllRanges()
-      sel.addRange(range)
-    }
-    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(SALON.phoneCopy).then(done, selectIt)
-    else selectIt()
-  }
+  // ---- page and cart ----
+  const route = useRoute()
+  const Page = PAGE_VIEWS[route]
+  const cart = useCartState()
 
   return (
-    <>
+    <CartProvider value={cart}>
       {gate !== 'gone' && <OpeningGate loaded={loaded} total={ALL_IMAGES.length} onOpen={openGate} />}
       {opened && <FloatingItems />}
       <canvas ref={canvasRef} className="confetti" aria-hidden="true" />
 
-      <div className="page">
-        <header className="hero">
-          <img className="hero-logo" src={LOGO.src} width={LOGO.width} height={LOGO.height} alt="Beauty Care by Tayyaba, Professional Salon and Spa Services" />
-          <p className="script hero-script">Because you deserve the best</p>
-          <h1 className="gold-text">Your Beauty, Our Passion</h1>
-          <p className="hero-lead">
-            Bridal packages, party makeup, skin care, hair and nails, all in one place in Lahore. Book on WhatsApp or call{' '}
-            <span className="nowrap">{SALON.phoneDisplay}</span>.
-          </p>
-          <div className="actions">
-            <a className="btn btn-primary" href={bookingLink()} target="_blank" rel="noopener noreferrer">
-              <WhatsAppIcon /> Book on WhatsApp
-            </a>
-            <a className="btn" href={SALON.tel}>
-              <PhoneIcon /> Call {SALON.phoneDisplay}
-            </a>
-          </div>
-          <a className="hero-address" href={SALON.maps} target="_blank" rel="noopener noreferrer">
-            <PinIcon width={16} height={16} /> {SALON.address}
-          </a>
-        </header>
-
-        <section className="featured" aria-label="Special deals">
-          {FEATURED_DEALS.map((deal, i) => (
-            <PosterCard key={deal.id} deal={deal} featured onView={() => setViewer({ items: FEATURED_DEALS, index: i })} />
-          ))}
-        </section>
-
-        <section id="deals">
-          <div className="section-head">
-            <p className="script">Choose yours</p>
-            <h2 className="gold-text">All Deals</h2>
-          </div>
-          <div className="chips" role="group" aria-label="Filter deals">
-            {CATEGORIES.map((c) => (
-              <button key={c.id} className="chip" aria-pressed={cat === c.id} onClick={() => setCat(c.id)}>
-                {c.label}
-              </button>
-            ))}
-          </div>
-          <div className="wall">
-            {visibleDeals.map((deal, i) => (
-              <PosterCard key={deal.id} deal={deal} onView={() => setViewer({ items: visibleDeals, index: i })} />
-            ))}
-          </div>
-        </section>
-
-        <section id="results">
-          <div className="section-head">
-            <p className="script">100% real</p>
-            <h2 className="gold-text">See Our Results</h2>
-            <p>Watch our client results and daily work on TikTok and Instagram.</p>
-          </div>
-          <div className="socials">
-            <a className="social" href={SALON.tiktok} target="_blank" rel="noopener noreferrer">
-              <TikTokIcon width={30} height={30} />
-              <span>
-                <strong>TikTok</strong>
-                {SALON.handle}
-              </span>
-              <em>Open TikTok</em>
-            </a>
-            <a className="social" href={SALON.instagram} target="_blank" rel="noopener noreferrer">
-              <InstagramIcon width={30} height={30} />
-              <span>
-                <strong>Instagram</strong>
-                {SALON.handle}
-              </span>
-              <em>Open Instagram</em>
-            </a>
-          </div>
-        </section>
-
-        <section id="visit" className="visit">
-          <div className="section-head">
-            <p className="script">Find us</p>
-            <h2 className="gold-text">Visit the Salon</h2>
-          </div>
-          <div className="visit-grid">
-            <div className="visit-item">
-              <PinIcon width={26} height={26} />
-              <h3>Address</h3>
-              <p>{SALON.address}</p>
-              <a className="btn btn-small" href={SALON.maps} target="_blank" rel="noopener noreferrer">
-                Open in Google Maps
-              </a>
-            </div>
-            <div className="visit-item">
-              <PhoneIcon width={26} height={26} />
-              <h3>Call or message</h3>
-              <p className="visit-number" ref={numberRef}>
-                {SALON.phoneCopy}
-              </p>
-              <div className="actions">
-                <a className="btn btn-small" href={SALON.tel}>
-                  Call
-                </a>
-                <button className="btn btn-small" onClick={copyNumber} id="copy-number">
-                  {copied ? 'Copied' : 'Copy number'}
-                </button>
-              </div>
-            </div>
-            <div className="visit-item">
-              <WhatsAppIcon width={26} height={26} />
-              <h3>WhatsApp</h3>
-              <p>Send us a message to book any deal. The same number works for calls and WhatsApp.</p>
-              <a className="btn btn-small btn-primary" href={bookingLink()} target="_blank" rel="noopener noreferrer">
-                Chat on WhatsApp
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <footer className="footer">
-          <p className="script">See you at the salon</p>
-          <p>
-            {SALON.name} · {SALON.tagline}
-          </p>
-          {MUSIC_CREDIT && (
-            <p className="footer-credit">
-              <a href={MUSIC_CREDIT.url} target="_blank" rel="noopener noreferrer">
-                {MUSIC_CREDIT.text}
-              </a>
-            </p>
-          )}
-        </footer>
-      </div>
+      <Header route={route} />
+      <main className="page" key={route}>
+        <Page />
+        <Footer />
+      </main>
 
       {opened && <Dock music={music} dayKey={dayKey} onToggle={toggleMusic} onPickDay={pickDay} />}
-
-      {viewer && (
-        <Lightbox
-          items={viewer.items}
-          index={viewer.index}
-          onChange={(index) => setViewer((v) => ({ ...v, index }))}
-          onClose={() => setViewer(null)}
-        />
-      )}
-    </>
+      <CartDrawer />
+    </CartProvider>
   )
 }

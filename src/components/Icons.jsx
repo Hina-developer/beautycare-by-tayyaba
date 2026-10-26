@@ -61,6 +61,39 @@ export const SparkleIcon = (p) => (
     <path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z" />
   </svg>
 )
+export const MenuIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
+  </svg>
+)
+export const CopyIcon = (p) => (
+  <svg {...base} {...p}>
+    <rect x="9" y="9" width="11" height="11" rx="2" />
+    <path d="M5 15V5a1 1 0 0 1 1-1h10" />
+  </svg>
+)
+export const GlobeIcon = (p) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18" />
+  </svg>
+)
+export const BagIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M5 8h14l-1.2 12H6.2z" />
+    <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+  </svg>
+)
+export const MinusIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M6 12h12" />
+  </svg>
+)
+export const PlusIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M12 6v12M6 12h12" />
+  </svg>
+)
 export const ChevronIcon = (p) => (
   <svg {...base} {...p}>
     <path d="M6 14.5l6-6 6 6" />
@@ -89,4 +122,12 @@ export const Equalizer = ({ playing }) => (
     <i />
     <i />
   </span>
+)
+export const HeartIcon = ({ filled, ...p }) => (
+  <svg {...base} {...p}>
+    <path
+      d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"
+      fill={filled ? 'currentColor' : 'none'}
+    />
+  </svg>
 )
