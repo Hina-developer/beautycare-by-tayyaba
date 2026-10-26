@@ -72,14 +72,66 @@ Kisi aur hosting (Netlify, Vercel) ke liye: `npm run build` chalayein aur `dist`
 
 ## Kya kahan hai (where things are)
 
+Menu: Home · Services (All, Makeup, Hair, Nails & Lashes, Skin/Spa/Body, Training) · Shop (Bridal & Party Wear, Dress on Rent, Jewellery, Beauty Products) · Weekend Deals · Gallery · About (About Us, Follow Us) · Contact.
+Har page ka apna link hai, jaise `.../#boutique`, `.../#rent`, `.../#contact`.
+
 | Kya badalna hai | File |
 | --- | --- |
-| Phone number, WhatsApp, TikTok, Instagram, address | `src/data.js` (sab se upar `SALON`) |
-| Deals ke naam aur prices | `src/data.js` (`FEATURED_DEALS` aur `DEALS`) |
-| Upar ki heading aur likhai | `src/App.jsx` (hero) aur `src/components/OpeningGate.jsx` (pehli screen) |
-| Posters ki images | `public/images/` |
+| Phone, WhatsApp, TikTok, Instagram, address, timing, website link | `src/data.js` (sab se upar `SALON`) |
+| Services, un ke price aur time | `src/services.js` |
+| Dresses, rental dresses, jewellery, beauty products | `src/catalog.js` (tasveerein `public/shop/` mein) |
+| Rental dress ki booked dates | `src/catalog.js` (har dress ka `booked`) |
+| Weekend Deals ki posts | `src/designedDeals.js` |
+| Deal posters | `src/data.js` aur `public/images/` |
+| Gallery ki tasveerein aur videos | `src/gallery.js` aur `public/gallery/` |
+| Client reviews (sirf asli) | `src/reviews.js` |
+| Training page | `src/pages/Training.jsx` |
+| Menu | `src/router.js` |
 | Har din ka song | `public/songs/` |
 | Colours aur fonts | `src/styles.css` (sab se upar `:root`) |
+
+## Orders, bookings aur admin
+
+- Admin panel aur database **nahi** hai (aap ne WhatsApp wala tareeqa chuna). Cart ka order, appointment, rental request aur message, sab WhatsApp par tayyar message ban kar aate hain. Client WhatsApp mein Send dabati hai, phir aap jawab de kar confirm karti hain.
+- Online payment nahi hai. Price aur payment WhatsApp par tay hota hai.
+- Rental: koi booking khud confirm nahi hoti. Aap check kar ke WhatsApp par confirm karti hain. Jo dates book ho jayein woh `catalog.js` mein `booked` mein likh dein, phir website un dates par warning degi.
+- Prices, products, deals badalne ke liye file badal kar GitHub par upload karein (ya mujhe bata dein).
+- Baad mein admin panel chahiye ho to Supabase (free) jod sakte hain.
+
+## Likes (dil wala button)
+
+Har service card par **Like** button hai. Pehli dafa like karne par visitor apna naam likhti hai (sirf ek dafa). **"1 like / 5 likes"** par tap karne se un logon ke naam ki list khulti hai jinhon ne like kiya.
+
+**Abhi:** `src/likesConfig.js` khali hai, is liye like sirf usi phone par yaad rehta hai. Doosre log aur aap kisi aur ka like nahi dekh saktin.
+
+**Sab ko list dikhane ke liye (free Firebase, ek dafa ka kaam):**
+1. https://console.firebase.google.com par apne Google account se jayein, **Create a project** (naam: beautycare-likes). Google Analytics band kar dein.
+2. Left menu **Build > Authentication > Get started > Sign-in method > Anonymous > Enable > Save**.
+3. **Build > Firestore Database > Create database**, location koi bhi (masalan asia-south1), **Start in production mode**.
+4. Firestore mein **Rules** tab kholein, sab mita kar yeh paste karein, phir **Publish**:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /likes/{id} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && id == request.resource.data.post + '__' + request.auth.uid
+        && request.resource.data.keys().hasOnly(['post', 'name', 'uid', 'at'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.post is string && request.resource.data.post.size() <= 80
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 40;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+  }
+}
+```
+5. Upar gear icon > **Project settings**. Wahan se **Project ID** aur **Web API Key** copy karein.
+6. GitHub par `src/likesConfig.js` kholein, pencil (edit) dabayein, dono values `''` ke andar likhein, **Commit changes**.
+
+Rules ki wajah se har koi sirf apna like hata sakta hai, kisi aur ka nahi. Kisi ka galat naam hatana ho to Firebase mein **Firestore > Data > likes** mein us document ko delete kar dein.
 
 ## Songs: har din alag song
 
@@ -121,23 +173,22 @@ Website khulte hi saari images ek saath load hoti hain (`src/preload.js`). Jab t
 ## Folder structure
 
 ```
-index.html
+index.html            page ka naam, Google ke liye details
 src/
-  main.jsx            React start
-  App.jsx             poora page
-  data.js             salon ki details aur deals
-  music.js            har din ka song (songs ki list yahan hai)
-  preload.js          saari images pehle load karna
-  confetti.js         glitter (sparkles)
-  styles.css          design
-  components/
-    OpeningGate.jsx   pehli screen (Welcome, Enter button)
-    FloatingItems.jsx urti hui salon ki cheezein (brush, lipstick...)
-    PosterCard.jsx    ek deal ka card
-    Lightbox.jsx      poster bada kar ke dekhna
-    Dock.jsx          neeche wali bar: music, call, WhatsApp
-    Icons.jsx         icons
+  App.jsx             welcome screen, menu, music, cart aur pages
+  router.js           menu aur pages ki list
+  data.js             salon ki details aur posters
+  services.js         services
+  catalog.js          shop: dresses, rental, jewellery, products
+  cart.js             cart
+  designedDeals.js    Weekend Deals posts
+  gallery.js          gallery
+  reviews.js          reviews
+  music.js, preload.js, confetti.js, styles.css
+  pages/              har page ki file (Home, ServicesPage, Training, Boutique, Rent,
+                      Jewellery, Products, Deals, Gallery, About, Follow, Contact)
+  components/         Header, Footer, CartDrawer, ProductModal, ShopPage, Modal,
+                      DealPost, ServiceArt (drawings), OpeningGate, Dock, waghera
 public/
-  images/             posters
-  songs/              aap ke MP3 songs
+  images/  songs/  shop/  gallery/
 ```
