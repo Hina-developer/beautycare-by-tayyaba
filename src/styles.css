@@ -2159,3 +2159,8 @@ button.product:hover {
   bottom: auto;
   left: 10px;
 }
+
+/* poster photo on a service card */
+.svc-photo {
+  margin-bottom: 6px;
+}

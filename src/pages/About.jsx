@@ -23,8 +23,7 @@ export default function About() {
           </p>
           <p>
             We do bridal and party makeup, facials and skin polishers, hair cuts, styling and treatments, nails and nail art, lashes,
-            threading, waxing and massage. Our boutique has bridal and party wear, dresses on rent, jewellery and beauty products. We
-            also train girls who want to learn salon work and build a career in beauty.
+            threading, waxing and massage. We also train girls who want to learn salon work and build a career in beauty.
           </p>
           <p>
             We are open {SALON.hours.toLowerCase()}. Book on WhatsApp or call {SALON.phoneDisplay}; the same number works for both.

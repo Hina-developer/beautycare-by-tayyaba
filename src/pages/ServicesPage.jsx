@@ -1,17 +1,26 @@
 import { SERVICES, SERVICE_GROUPS } from '../services'
-import { bookingLink } from '../data'
+import { ALL_POSTERS, bookingLink } from '../data'
+import usePosterViewer from '../components/usePosterViewer'
 import PageHead from '../components/PageHead'
 import ServiceArt from '../components/ServiceArt'
 import { WhatsAppIcon } from '../components/Icons'
 import LikeButton from '../components/LikeButton'
 import { postId } from '../likes'
 
-function ServiceCard({ s }) {
+function ServiceCard({ s, onView }) {
+  const poster = ALL_POSTERS.find((p) => p.id === s.poster)
   return (
     <li className="svc">
-      <span className="service-art">
-        <ServiceArt name={s.art} />
-      </span>
+      {poster ? (
+        <button className="card-poster card-frame svc-photo" onClick={() => onView(poster)} aria-label={`View photo: ${s.title}`}>
+          <img className="card-blur" src={poster.src} alt="" aria-hidden="true" loading="eager" />
+          <img className="card-art" src={poster.src} width={poster.width} height={poster.height} alt={s.title} loading="eager" />
+        </button>
+      ) : (
+        <span className="service-art">
+          <ServiceArt name={s.art} />
+        </span>
+      )}
       <h3 className="service-title">{s.title}</h3>
       <p className="service-text">{s.text}</p>
       <dl className="svc-meta">
@@ -40,6 +49,7 @@ function ServiceCard({ s }) {
 export default function ServicesPage({ group = 'all' }) {
   const groups = group === 'all' ? SERVICE_GROUPS : SERVICE_GROUPS.filter((g) => g.id === group)
   const single = groups.length === 1
+  const [view, viewer] = usePosterViewer()
 
   return (
     <>
@@ -72,7 +82,7 @@ export default function ServicesPage({ group = 'all' }) {
           )}
           <ul className="svc-grid">
             {SERVICES.filter((s) => s.group === g.id).map((s) => (
-              <ServiceCard key={s.title} s={s} />
+              <ServiceCard key={s.title} s={s} onView={(p) => view([p], 0)} />
             ))}
           </ul>
           {!single && (
@@ -85,6 +95,7 @@ export default function ServicesPage({ group = 'all' }) {
         </section>
       ))}
 
+      {viewer}
       {single && (
         <p className="center">
           <a className="btn" href="#services">

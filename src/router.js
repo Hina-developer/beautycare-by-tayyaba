@@ -15,17 +15,7 @@ export const MENU = [
       { id: 'training', label: 'Training for Girls' },
     ],
   },
-  {
-    label: 'Shop',
-    children: [
-      { id: 'boutique', label: 'Bridal & Party Wear' },
-      { id: 'rent', label: 'Dress on Rent' },
-      { id: 'jewellery', label: 'Jewellery' },
-      { id: 'products', label: 'Beauty Products' },
-    ],
-  },
   { id: 'deals', label: 'Weekend Deals' },
-  { id: 'gallery', label: 'Gallery' },
   {
     label: 'About',
     children: [
@@ -40,7 +30,7 @@ export const MENU = [
 export const PAGES = MENU.flatMap((m) => m.children || [m])
 
 // old links that should still open the right page
-const ALIASES = { results: 'gallery' }
+const ALIASES = {}
 
 function currentPage() {
   const raw = window.location.hash.replace('#', '')

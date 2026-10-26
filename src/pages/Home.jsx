@@ -5,13 +5,9 @@ import { PhoneIcon, PinIcon, WhatsAppIcon } from '../components/Icons'
 
 const EXPLORE = [
   { href: '#services', art: 'palette', title: 'Salon Services', text: 'Makeup, hair, nails, lashes, skin and spa.' },
-  { href: '#boutique', art: 'dress', title: 'Bridal & Party Wear', text: 'Bridal, wedding, party and formal dresses.' },
-  { href: '#rent', art: 'gown', title: 'Dress on Rent', text: 'Bridal and party dresses for your dates.' },
-  { href: '#jewellery', art: 'necklace', title: 'Jewellery', text: 'Bridal sets, earrings, bangles and more.' },
-  { href: '#products', art: 'lipstick', title: 'Beauty Products', text: 'Makeup, skincare and haircare.' },
   { href: '#deals', art: 'glow', title: 'Weekend Deals', text: 'Special offers on salon services.' },
-  { href: '#gallery', art: 'salon', title: 'Gallery', text: 'Our work and our salon.' },
   { href: '#training', art: 'certificate', title: 'Training for Girls', text: 'Learn salon work and get certified.' },
+  { href: '#contact', art: 'salon', title: 'Book & Contact', text: 'Book an appointment or find us.' },
 ]
 
 const reviewLink = whatsappLink('Assalam o Alaikum! Here is my review of Beauty Care by Tayyaba:\n')
@@ -24,8 +20,8 @@ export default function Home() {
         <p className="script hero-script">Because you deserve the best</p>
         <h1 className="gold-text">Your Beauty, Our Passion</h1>
         <p className="hero-lead">
-          Welcome to Beauty Care by Tayyaba, a ladies salon, spa and beauty boutique in Lahore. Bridal and party makeup, hair, nails,
-          skin care, dresses, jewellery and beauty products, all in one place.
+          Welcome to Beauty Care by Tayyaba, a ladies salon and spa in Lahore. Bridal and party makeup, hair, nails, lashes,
+          skin care, spa and body care, all in one place.
         </p>
         <div className="actions">
           <a className="btn btn-primary" href={bookingLink()} target="_blank" rel="noopener noreferrer">
