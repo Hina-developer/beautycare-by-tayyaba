@@ -23,6 +23,7 @@ import Gallery from './pages/Gallery'
 import About from './pages/About'
 import Follow from './pages/Follow'
 import Contact from './pages/Contact'
+import Admin from './pages/Admin'
 
 // Which component draws each page. The page names and menu are in src/router.js.
 const PAGE_VIEWS = {
@@ -42,6 +43,7 @@ const PAGE_VIEWS = {
   about: About,
   follow: Follow,
   contact: Contact,
+  admin: Admin,
 }
 
 export default function App() {

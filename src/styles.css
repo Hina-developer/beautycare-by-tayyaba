@@ -2169,3 +2169,70 @@ button.product:hover {
 .card-tall .card-frame {
   aspect-ratio: 9 / 16;
 }
+
+/* ---------- admin (likes) ---------- */
+.admin-login {
+  max-width: 460px;
+  grid-template-columns: minmax(0, 1fr);
+}
+.admin {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 820px;
+  margin-inline: auto;
+}
+.admin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.admin-total strong {
+  color: var(--gold-hi);
+  font-size: 1.3rem;
+}
+.admin-filter {
+  display: grid;
+  gap: 6px;
+  max-width: 420px;
+}
+.admin-filter select {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--cream);
+  font: 400 1rem/1.4 var(--font-body);
+}
+.admin-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.admin-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: var(--ink-raised);
+}
+.admin-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.admin-phone {
+  color: var(--gold-hi);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+.admin .service-text {
+  padding-inline: 0;
+}

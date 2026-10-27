@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SHARED, cleanPhone, like, maskPhone, unlike, saveName, savedName, useLikes } from '../likes'
+import { SHARED, cleanPhone, like, unlike, saveName, savedName, useLikes } from '../likes'
 import Modal from './Modal'
 import { HeartIcon } from './Icons'
 
@@ -24,7 +24,7 @@ export default function LikeButton({ post, title }) {
   function tapHeart() {
     if (mine) return run(() => unlike(post))
     const phone = savedName()
-    if (phone) run(() => like(post, maskPhone(phone)))
+    if (phone) run(() => like(post, phone, title))
     else setAsking(true)
   }
 
@@ -56,7 +56,7 @@ export default function LikeButton({ post, title }) {
           onSave={(phone) => {
             saveName(phone)
             setAsking(false)
-            run(() => like(post, maskPhone(phone)))
+            run(() => like(post, phone, title))
           }}
         />
       )}

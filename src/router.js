@@ -27,7 +27,10 @@ export const MENU = [
 ]
 
 /** Every page, in menu order. */
-export const PAGES = MENU.flatMap((m) => m.children || [m])
+// Pages that work by link but are not in the menu.
+const HIDDEN = [{ id: 'admin', label: 'Admin' }]
+
+export const PAGES = [...MENU.flatMap((m) => m.children || [m]), ...HIDDEN]
 
 // old links that should still open the right page
 const ALIASES = {}

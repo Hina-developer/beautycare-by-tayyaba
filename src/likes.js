@@ -1,8 +1,10 @@
-// Likes for the service cards.
+// Likes for every card.
 //
 // Two modes:
 //   shared : FIREBASE in likesConfig.js is filled in. Every like is saved in a
-//            free Firestore database, so everyone sees the same list of names.
+//            free Firestore database, so everyone sees the same list:
+//              likes/          post + half-hidden number (anyone can read)
+//              likes_private/  post + FULL number (only the admin can read, see #admin)
 //   local  : FIREBASE is empty. Likes are kept on this phone only.
 //
 // No library is needed: Firebase is reached through its plain web (REST) API.
@@ -70,9 +72,9 @@ const subscribe = (l) => {
 }
 
 // ---- Firebase (REST) ----
-const DB = SHARED
-  ? `https://firestore.googleapis.com/v1/projects/${FIREBASE.projectId}/databases/(default)/documents/likes`
-  : ''
+const ROOT = SHARED ? `https://firestore.googleapis.com/v1/projects/${FIREBASE.projectId}/databases/(default)/documents` : ''
+const DB = ROOT + '/likes'
+const PRIVATE = ROOT + '/likes_private'
 
 /** Signs this browser in anonymously (no email), so it can only remove its own likes. */
 async function token() {
@@ -141,8 +143,9 @@ export function loadLikes() {
     .catch(() => set({ status: 'error' }))
 }
 
-/** Adds a like. Resolves to true when saved. */
-export async function like(post, name) {
+/** Adds a like from this phone number. Resolves to true when saved. */
+export async function like(post, phone, title) {
+  const name = maskPhone(phone)
   const before = state.likes
   const add = (uid) => ({ ...state.likes, [post]: [{ name, uid, at: new Date().toISOString() }, ...(state.likes[post] || []).filter((l) => l.uid !== uid)] })
   if (!SHARED) {
@@ -167,6 +170,21 @@ export async function like(post, name) {
     })
     // 409 means this person already liked it: that's fine
     if (!res.ok && res.status !== 409) throw new Error('save failed')
+    // the full number goes to the private list, which only the admin can read
+    const priv = await fetch(`${PRIVATE}?documentId=${encodeURIComponent(post + '__' + a.uid)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + a.idToken },
+      body: JSON.stringify({
+        fields: {
+          post: { stringValue: post },
+          title: { stringValue: String(title || post).slice(0, 120) },
+          phone: { stringValue: phone },
+          uid: { stringValue: a.uid },
+          at: { timestampValue: new Date().toISOString() },
+        },
+      }),
+    })
+    if (!priv.ok && priv.status !== 409) throw new Error('save failed')
     return true
   } catch {
     set({ likes: before })
@@ -193,6 +211,10 @@ export async function unlike(post) {
       headers: { Authorization: 'Bearer ' + a.idToken },
     })
     if (!res.ok && res.status !== 404) throw new Error('remove failed')
+    await fetch(`${PRIVATE}/${encodeURIComponent(post + '__' + a.uid)}`, {
+      method: 'DELETE',
+      headers: { Authorization: 'Bearer ' + a.idToken },
+    })
     return true
   } catch {
     set({ likes: before })
