@@ -98,22 +98,22 @@ Har page ka apna link hai, jaise `.../#boutique`, `.../#rent`, `.../#contact`.
 - Prices, products, deals badalne ke liye file badal kar GitHub par upload karein (ya mujhe bata dein).
 - Baad mein admin panel chahiye ho to Supabase (free) jod sakte hain.
 
-## Likes (dil wala button)
+## Likes (dil wala button) aur Admin page
 
-Har service card par **Like** button hai. Pehli dafa like karne par visitor apna naam likhti hai (sirf ek dafa). **"1 like / 5 likes"** par tap karne se un logon ke naam ki list khulti hai jinhon ne like kiya.
+Har card par **Like** button hai. Pehli dafa like karne par visitor apna **contact number** likhti hai (sirf ek dafa). **"1 like / 5 likes"** par tap karne se list khulti hai, jis mein number aadha chhupa hota hai (jaise 0300 ****543).
 
-**Abhi:** `src/likesConfig.js` khali hai, is liye like sirf usi phone par yaad rehta hai. Doosre log aur aap kisi aur ka like nahi dekh saktin.
+**Poore numbers sirf aap ke liye:** website ke link ke aakhir mein `#admin` lagayein:
+https://hina-developer.github.io/beautycare-by-tayyaba/#admin
+Apni email (h31902572@gmail.com) aur Firebase wala password likhein. Wahan har like ka poora number, post ka naam aur waqt hai, saath WhatsApp aur Call ke buttons. Yeh page menu mein nahi hai. Password bhool jayein to "Forgot password" dabayein.
 
-**Sab ko list dikhane ke liye (free Firebase, ek dafa ka kaam):**
-1. https://console.firebase.google.com par apne Google account se jayein, **Create a project** (naam: beautycare-likes). Google Analytics band kar dein.
-2. Left menu **Build > Authentication > Get started > Sign-in method > Anonymous > Enable > Save**.
-3. **Build > Firestore Database > Create database**, location koi bhi (masalan asia-south1), **Start in production mode**.
-4. Firestore mein **Rules** tab kholein, sab mita kar yeh paste karein, phir **Publish**:
+Firebase project: **beautycare-likes** (console.firebase.google.com). Settings `src/likesConfig.js` mein hain.
+
+**Firestore rules** (Firestore Database > Rules mein yehi hone chahiyein):
 
 ```
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{db}/documents {
+  match /databases/{database}/documents {
     match /likes/{id} {
       allow read: if true;
       allow create: if request.auth != null
@@ -122,16 +122,27 @@ service cloud.firestore {
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.post is string && request.resource.data.post.size() <= 80
         && request.resource.data.name is string
-        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 40;
+        && request.resource.data.name.matches('^03[0-9]{2} [*]{4}[0-9]{3}$');
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+    match /likes_private/{id} {
+      allow read: if request.auth != null && request.auth.token.email == 'h31902572@gmail.com';
+      allow create: if request.auth != null
+        && id == request.resource.data.post + '__' + request.auth.uid
+        && request.resource.data.keys().hasOnly(['post', 'title', 'phone', 'uid', 'at'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.post is string && request.resource.data.post.size() <= 80
+        && request.resource.data.title is string && request.resource.data.title.size() <= 120
+        && request.resource.data.phone is string
+        && request.resource.data.phone.matches('^03[0-9]{9}$');
+      allow delete: if request.auth != null
+        && (resource.data.uid == request.auth.uid || request.auth.token.email == 'h31902572@gmail.com');
     }
   }
 }
 ```
-5. Upar gear icon > **Project settings**. Wahan se **Project ID** aur **Web API Key** copy karein.
-6. GitHub par `src/likesConfig.js` kholein, pencil (edit) dabayein, dono values `''` ke andar likhein, **Commit changes**.
 
-Rules ki wajah se har koi sirf apna like hata sakta hai, kisi aur ka nahi. Kisi ka galat naam hatana ho to Firebase mein **Firestore > Data > likes** mein us document ko delete kar dein.
+Rules ki wajah se: website par sab sirf aadha number dekh sakte hain; poora number sirf admin email login kar ke; har koi sirf apna like hata sakta hai.
 
 ## Songs: har din alag song
 
